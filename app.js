@@ -2,14 +2,7 @@ import http from 'http';
 import fs from 'fs';
 import rotas from './routes.js';
 import sqlite3 from 'sqlite3';
-import { Sequelize } from 'sequelize';
-
-const sequelize = new Sequelize({ 
-    dialect: 'sqlite',
-    storage: './tic.db'
-});
-
-sequelize.authenticate();
+import { sequelize } from './models.js';
 
 const db = new sqlite3.Database('./tic.db', (erro) => {
     if(erro) {
@@ -35,18 +28,21 @@ fs.readFile('./mensagem.txt', 'utf8', (erro, conteudo) => {
 
     console.log('Conteúdo:', conteudo);
 
+
     iniciaServidorHttp(conteudo);
 
 });
 
-function iniciaServidorHttp(conteudo) {
+async function iniciaServidorHttp(conteudo) {
+   await sequelize.sync();
+
     const servidor = http.createServer((req, res) => {
         rotas(req, res, { conteudo });
     });
 
     const porta = 3000;
     const host = 'localhost';
-    
+
     servidor.listen(porta, host, () => {
         console.log(`Servidor executando em http://${host}:${porta}/`);
     });
