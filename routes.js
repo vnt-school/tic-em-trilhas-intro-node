@@ -1,4 +1,5 @@
-import { criaProduto, leProdutos, leProdutoPorId, atualizaProdutoPorId, deletaProdutoPorId } from './models.js';
+import fs from 'fs';
+import { sequelize, criaProduto, leProdutos, leProdutoPorId, atualizaProdutoPorId, deletaProdutoPorId } from './models.js';
 
 export default async function rotas(req, res, dado) {
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -52,7 +53,6 @@ export default async function rotas(req, res, dado) {
 
                 return;
             }
-
             try {
                 const resposta = await criaProduto(produto);
                 
@@ -109,7 +109,7 @@ export default async function rotas(req, res, dado) {
 
             res.statusCode = 400;
 
-            if (!produto?.nome && !produto?.preco) {
+            if (!produto?.nome && !produto.preco) {
                 const resposta = {
                     erro: { 
                         mensagem: `Nenhum atributo foi encontrado, porém ao menos um é obrigatório para a atualização do produto` 
@@ -122,7 +122,6 @@ export default async function rotas(req, res, dado) {
             }
 
             const id = req.url.split('/')[2];
-
             try {
                 const resposta = await atualizaProdutoPorId(id, produto);
 
@@ -142,7 +141,7 @@ export default async function rotas(req, res, dado) {
 
                 const resposta = {
                     erro: {
-                        mensagem: `Falha ao atualizar produto ${id}`
+                        mensagem: `Falha ao atualizar produto ${produto.nome}`
                     }
                 };
 
@@ -187,12 +186,12 @@ export default async function rotas(req, res, dado) {
 
             return;
         } catch (erro) {
-            console.log('Falha ao deletar produto', erro);
+            console.log('Falha ao remover produto', erro);
             res.statusCode = 500;
 
             const resposta = {
                 erro: {
-                    mensagem: `Falha ao deletar produto ${id}`
+                    mensagem: `Falha ao remover produto ${id}`
                 }
             };
 
