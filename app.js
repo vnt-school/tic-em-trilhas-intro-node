@@ -2,14 +2,22 @@ import http from 'http';
 import fs from 'fs';
 import rotas from './routes.js';
 import sqlite3 from 'sqlite3';
+import { Sequelize } from 'sequelize';
 
-const db = new sqlite3.Database('./tic.db ', (err) => {
-    if (err) {
-        console.error(err.message);
+const sequelize = new Sequelize({ 
+    dialect: 'sqlite',
+    storage: './tic.db'
+});
+
+sequelize.authenticate();
+
+const db = new sqlite3.Database('./tic.db', (erro) => {
+    if(erro) {
+        console.log('Falha ao incializar o banco de dados');
+        return;
     }
-    console.log('Conectado ao banco de dados SQLite.');
-
-}); 
+    console.log('Banco de dados inicializado');
+});
 
 fs.writeFile('./mensagem.txt', 'Olá, TIC em Trilhas do arquivo!', 'utf8', (erro) => {
     if (erro) {
