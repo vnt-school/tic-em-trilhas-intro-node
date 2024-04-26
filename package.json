@@ -1,17 +1,19 @@
 {
-  "name": "primeira-api",
+  "name": "tic-acai",
   "version": "1.0.0",
-  "description": "nossa primeira api",
-  "main": "outro-app.js",
+  "description": "API da loja TIC Acaí",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./",
     "start:dev": "nodemon"
   },
   "keywords": [
-    "primeira",
-    "api"
+    "nodejs",
+    "api",
+    "acai"
   ],
   "author": "Murilo Bizin",
-  "license": "ISC"
+  "license": "ISC",
+  "type": "module"
 }
