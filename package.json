@@ -15,5 +15,8 @@
   ],
   "author": "Murilo Bizin",
   "license": "ISC",
+  "dependencies": {
+    "sqlite3": "^5.1.6"
+  },
   "type": "module"
 }

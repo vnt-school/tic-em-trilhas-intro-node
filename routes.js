@@ -17,7 +17,7 @@ export default function rotas(req, res, dado) {
         return;
     }
 
-    if(req.method === 'PUT' && req.url === '/arquivos') {
+    if(req.method === 'PUT' && req.url === '/arquivos'){
         const corpo = [];
 
         req.on('data', (parte) => {
@@ -41,10 +41,10 @@ export default function rotas(req, res, dado) {
                 return;
             }
 
-            fs.writeFile(`${arquivo.nome}.txt`, arquivo?.conteudo ?? '', 'utf-8', (erro) => {
-                if(erro) {
+            fs.writeFile(`${arquivo.nome}.txt`, arquivo?.conteudo ?? '', 'utf8', (erro) => {
+                if (erro) {
                     console.log('Falha ao criar arquivo', erro);
-                    
+
                     res.statusCode = 500;
 
                     const resposta = {
@@ -70,14 +70,14 @@ export default function rotas(req, res, dado) {
             });
         });
 
-        req.on('error', (erro) => {
-            console.log('Falha ao processar a requisição', erro);
+        req.on('error', (error) => {
+            console.log('Falha ao processar requisição', error);
 
             res.statusCode = 400;
 
             const resposta = {
                 erro: {
-                    mensagem: 'Falha ao processar a requisição'
+                    mensagem: 'Falha ao processar requisição'
                 }
             };
 
@@ -88,7 +88,7 @@ export default function rotas(req, res, dado) {
 
         return;
     }
-    
+
     if (req.method === 'PATCH' && req.url === '/arquivos') {
         const corpo = [];
 
@@ -103,8 +103,8 @@ export default function rotas(req, res, dado) {
 
             if (!arquivo?.nome) {
                 const resposta = {
-                    erro: {
-                        mensagem: `O atributo 'nome' não foi encontrado, porém é obrigatório para a atualização do arquivo`
+                    erro: { 
+                        mensagem: `O atributo 'nome' não foi encontrado, porém é obrigatório para a atualização do arquivo` 
                     }
                 };
 
@@ -115,13 +115,13 @@ export default function rotas(req, res, dado) {
 
             if (!arquivo?.conteudo) {
                 const resposta = {
-                    erro: {
+                    erro: { 
                         mensagem: `O atributo 'conteudo' não foi encontrado, porém é obrigatório para a atualização do arquivo`
                     }
                 };
 
                 res.end(JSON.stringify(resposta));
-
+                
                 return;
             }
 
@@ -129,7 +129,7 @@ export default function rotas(req, res, dado) {
                 if(erro) {
                     console.log('Falha ao acessar arquivo', erro);
 
-                    res.statusCode = erro.code === 'ENOENT' ? 404 : 403;
+                    res.statusCode = erro.code == 'ENOENT' ? 404 : 403;
 
                     const resposta = {
                         erro: {
@@ -142,10 +142,10 @@ export default function rotas(req, res, dado) {
                     return;
                 }
 
-                fs.appendFile(`${arquivo.nome}.txt`, `\n${arquivo.conteudo}`, 'utf-8', (erro) => {
+                fs.appendFile(`${arquivo.nome}.txt`, `\n${arquivo.conteudo}`, 'utf8', (erro) => {
                     if (erro) {
                         console.log('Falha ao atualizar arquivo', erro);
-
+                        
                         res.statusCode = 500;
 
                         const resposta = {
@@ -172,14 +172,14 @@ export default function rotas(req, res, dado) {
             });
         });
 
-        req.on('error', (erro) => {
-            console.log('Falha ao processar a requisição', erro);
+        req.on('error', (error) => {
+            console.log('Falha ao processar requisição', error);
 
             res.statusCode = 400;
 
             const resposta = {
                 erro: {
-                    mensagem: 'Falha ao processar a requisição'
+                    mensagem: 'Falha ao processar requisição'
                 }
             };
 
@@ -216,10 +216,9 @@ export default function rotas(req, res, dado) {
             }
 
             fs.access(`${arquivo.nome}.txt`, fs.constants.W_OK, (erro) => {
-                if(erro) {
+                if (erro) {
                     console.log('Falha ao acessar arquivo', erro);
-
-                    res.statusCode = erro.code === 'ENOENT' ? 404 : 403;
+                    res.statusCode = erro.code == 'ENOENT' ? 404 : 403;
 
                     const resposta = {
                         erro: {
@@ -235,7 +234,6 @@ export default function rotas(req, res, dado) {
                 fs.rm(`${arquivo.nome}.txt`, (erro) => {
                     if (erro) {
                         console.log('Falha ao remover arquivo', erro);
-
                         res.statusCode = 500;
 
                         const resposta = {
@@ -248,7 +246,6 @@ export default function rotas(req, res, dado) {
 
                         return;
                     }
-
                     res.statusCode = 200;
 
                     const resposta = {
@@ -256,22 +253,20 @@ export default function rotas(req, res, dado) {
                     };
 
                     res.end(JSON.stringify(resposta));
-
+                    
                     return;
                 });
             });
-
-            
         });
 
-        req.on('error', (erro) => {
-            console.log('Falha ao processar a requisição', erro);
+        req.on('error', (error) => {
+            console.log('Falha ao processar requisição', error);
 
             res.statusCode = 400;
 
             const resposta = {
                 erro: {
-                    mensagem: 'Falha ao processar a requisição'
+                    mensagem: 'Falha ao processar requisição'
                 }
             };
 
@@ -286,7 +281,7 @@ export default function rotas(req, res, dado) {
     res.statusCode = 404;
 
     const resposta = {
-        erro: {
+        erro: { 
             mensagem: 'Rota não encontrada!',
             url: req.url
         }
